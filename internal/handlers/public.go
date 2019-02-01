@@ -117,6 +117,7 @@ func (h *Handler) handleCreate(c *gin.Context) {
 	}
 	originURL := h.getURLOrigin(c)
 	c.JSON(http.StatusOK, requestHelper{
+		ID:          id,
 		URL:         fmt.Sprintf("%s/%s", originURL, id),
 		DeletionURL: fmt.Sprintf("%s/d/%s/%s", originURL, id, url.QueryEscape(base64.RawURLEncoding.EncodeToString(delID))),
 	})
@@ -159,6 +160,12 @@ func (h *Handler) handleInfo(c *gin.Context) {
 		h.providers,
 		strings.Replace(runtime.Version(), "go", "", 1),
 	}
+	c.JSON(http.StatusOK, out)
+}
+
+// handleDisplayURL returns the URL to use for display purposes
+func (h *Handler) handleDisplayURL(c *gin.Context) {
+	out := util.GetConfig().DisplayURL
 	c.JSON(http.StatusOK, out)
 }
 
